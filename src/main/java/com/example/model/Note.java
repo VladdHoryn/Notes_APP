@@ -1,17 +1,18 @@
-package org.example.model;
+package com.example.model;
 
-import io.swagger.v3.oas.annotations.tags.Tags;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.aot.generate.Generated;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(schema = "notes")
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class Note {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
