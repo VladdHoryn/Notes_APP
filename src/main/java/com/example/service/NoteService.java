@@ -27,4 +27,22 @@ public class NoteService {
     public Note createNote(Note note){
         return noteRepository.save(note);
     }
+
+    @Transactional
+    public Note updateNote(Long noteId, Note note){
+        Note existingNote = noteRepository.findById(noteId)
+                .orElseThrow(() -> new NoteWasNotFoundException(noteId));
+
+        existingNote.setTitle(note.getTitle());
+        existingNote.setCreatedDate(note.getCreatedDate());
+        existingNote.setText(note.getText());
+        existingNote.setTag(note.getTag());
+
+        return noteRepository.save(existingNote);
+    }
+
+    @Transactional
+    public void deleteNote(Long id){
+        noteRepository.deleteById(id);
+    }
 }
