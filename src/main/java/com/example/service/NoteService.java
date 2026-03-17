@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.dto.NoteBrief;
 import com.example.model.Note;
 import com.example.repository.NoteRepository;
 import jakarta.transaction.Transactional;
@@ -13,6 +14,12 @@ import java.util.List;
 @AllArgsConstructor
 public class NoteService {
     private final NoteRepository noteRepository;
+
+    public List<NoteBrief> getAllNotesBrief(){
+        return noteRepository.findAll().stream()
+                .map(note -> NoteBrief.mapFromNote(note))
+                .toList();
+    }
 
     public List<Note> getAllNotes(){
         return noteRepository.findAll();
