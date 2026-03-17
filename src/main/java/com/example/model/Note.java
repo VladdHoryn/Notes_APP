@@ -1,6 +1,7 @@
 package com.example.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,8 +19,10 @@ public class Note {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Title can not be empty")
     private String title;
     private LocalDateTime createdDate;
+    @NotBlank(message = "Text can not be empty")
     private String text;
     @Enumerated(EnumType.STRING)
     private NoteTag tag;

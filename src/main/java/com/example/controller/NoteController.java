@@ -4,6 +4,7 @@ import com.example.model.Note;
 import com.example.service.NoteService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,11 +25,11 @@ public class NoteController {
         return noteService.getNoteById(id);
     }
     @PostMapping
-    public Note createNote(@RequestBody Note note){
+    public Note createNote(@Validated @RequestBody Note note){
         return noteService.createNote(note);
     }
     @PutMapping("/{id}")
-    public Note updateNote(@PathVariable Long id, @RequestBody Note note){
+    public Note updateNote(@PathVariable Long id,@Validated @RequestBody Note note){
         return noteService.updateNote(id, note);
     }
     @DeleteMapping("/{id}")
