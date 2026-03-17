@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Controller
 @RestController
-@RequestMapping("/note/v1/")
+@RequestMapping("/note/v1")
 @AllArgsConstructor
 public class NoteController {
     private final NoteService noteService;
@@ -29,9 +29,9 @@ public class NoteController {
     }
 
     @GetMapping
-    public List<Note> getAllNotes(@RequestParam(required = false) NoteTag tag){
-
-        return noteService.getAllNotes(tag);
+    public List<Note> getAllNotes(@RequestParam(required = false) String tag){
+        NoteTag noteTag = tag != null ? NoteTag.valueOf(tag) : null;
+        return noteService.getAllNotes(noteTag);
     }
     @GetMapping("/{id}")
     public Note getNoteById(@PathVariable Long id){
