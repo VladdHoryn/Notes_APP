@@ -7,8 +7,13 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.example.exception.NoteWasNotFoundException;
+import java.util.LinkedHashMap;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -19,6 +24,31 @@ public class NoteService {
         return noteRepository.findAll().stream()
                 .map(note -> NoteBrief.mapFromNote(note))
                 .toList();
+    }
+
+    public Map<String, Integer> getStats(Long id){
+        Note note = noteRepository.findById(id)
+                .orElseThrow(() -> new NoteWasNotFoundException(id));
+
+        String text = note.getText();
+
+        Map<String, Integer> frequency = new HashMap<>();
+
+        for (String word : text.toLowerCase().split("\\W+")) {
+            if (!word.isEmpty()) {
+                frequency.put(word, frequency.getOrDefault(word, 0) + 1);
+            }
+        }
+
+        return frequency.entrySet()
+                .stream()
+                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+                .collect(Collectors.toMap(
+                        entry -> entry.getKey(),
+                        entry -> entry.getValue(),
+                        (a, b) -> a,
+                        LinkedHashMap::new
+                ));
     }
 
     public List<Note> getAllNotes(){
