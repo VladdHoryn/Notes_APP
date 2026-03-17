@@ -2,6 +2,7 @@ package com.example.service;
 
 import com.example.dto.NoteBrief;
 import com.example.model.Note;
+import com.example.model.NoteTag;
 import com.example.repository.NoteRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -60,13 +61,20 @@ public class NoteService {
                 ));
     }
 
-    public List<Note> getAllNotes(){
+    public List<Note> getAllNotes(NoteTag tag){
         int page = 0;
         int size = 5;
 
-        return noteRepository.findAll(
-                PageRequest.of(page, size, Sort.by("createdDate").descending())
-        ).stream().toList();
+        if (tag != null) {
+            return noteRepository.findByTag(
+                    tag,
+                    PageRequest.of(page, size, Sort.by("createdDate").descending())
+            ).getContent();
+        } else {
+            return noteRepository.findAll(
+                    PageRequest.of(page, size, Sort.by("createdDate").descending())
+            ).getContent();
+        }
     }
 
     public Note getNoteById(Long id){

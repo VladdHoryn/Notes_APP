@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.dto.NoteBrief;
 import com.example.model.Note;
+import com.example.model.NoteTag;
 import com.example.service.NoteService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -28,8 +29,9 @@ public class NoteController {
     }
 
     @GetMapping
-    public List<Note> getAllNotes(){
-        return noteService.getAllNotes();
+    public List<Note> getAllNotes(@RequestParam(required = false) NoteTag tag){
+
+        return noteService.getAllNotes(tag);
     }
     @GetMapping("/{id}")
     public Note getNoteById(@PathVariable Long id){
