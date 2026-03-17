@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 public class Note {
@@ -26,6 +25,11 @@ public class Note {
     private String text;
     @Enumerated(EnumType.STRING)
     private NoteTag tag;
+
+    @PrePersist
+    public void onCreate() {
+        this.createdDate = LocalDateTime.now();
+    }
 
     public Note(String title, String text){
         this.title = title;

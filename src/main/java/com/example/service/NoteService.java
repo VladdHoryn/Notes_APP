@@ -5,6 +5,9 @@ import com.example.model.Note;
 import com.example.repository.NoteRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.config.PageableHandlerMethodArgumentResolverCustomizer;
 import org.springframework.stereotype.Service;
 import com.example.exception.NoteWasNotFoundException;
 import java.util.LinkedHashMap;
@@ -19,9 +22,15 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class NoteService {
     private final NoteRepository noteRepository;
+    private final PageableHandlerMethodArgumentResolverCustomizer pageableCustomizer;
 
     public List<NoteBrief> getAllNotesBrief(){
-        return noteRepository.findAll().stream()
+        int page = 0;
+        int size = 5;
+
+        return noteRepository.findAll(
+                        PageRequest.of(page, size, Sort.by("createdDate").descending())
+                ).stream()
                 .map(note -> NoteBrief.mapFromNote(note))
                 .toList();
     }
@@ -52,7 +61,12 @@ public class NoteService {
     }
 
     public List<Note> getAllNotes(){
-        return noteRepository.findAll();
+        int page = 0;
+        int size = 5;
+
+        return noteRepository.findAll(
+                PageRequest.of(page, size, Sort.by("createdDate").descending())
+        ).stream().toList();
     }
 
     public Note getNoteById(Long id){
